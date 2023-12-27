@@ -1,0 +1,92 @@
++*In[ ]:*+
+[source, ipython3]
+----
+# Constants
+NUM_CHARITIES = 3
+
+# Function to set up the donation system
+def setup_donation_system():
+    charities = []
+    for i in range(NUM_CHARITIES):
+        charity_name = input(f"Enter the name of charity {i + 1}: ")
+        charities.append(charity_name)
+
+    print("\nCharities:")
+    for i, charity in enumerate(charities, 1):
+        print(f"{i}. {charity}")
+
+    return charities
+
+
+# Function to record and total each donation
+def record_and_total_donation(charities, charity_totals):
+    while True:
+        try:
+            charity_choice = int(input("Enter the number of the chosen charity (1, 2, or 3, -1 to show totals): "))
+        except ValueError:
+            print("Error: Invalid input. Please enter a valid number.")
+            continue
+
+        if charity_choice == -1:
+            show_totals(charities, charity_totals)
+            break
+
+        if 1 <= charity_choice <= NUM_CHARITIES:
+            shopping_bill = float(input("Enter the value of the customer's shopping bill: "))
+            donation = shopping_bill * 0.01
+            charity_totals[charity_choice - 1] += donation
+            print(f"Donation to {charities[charity_choice - 1]}: ${donation:.2f}")
+        else:
+            print("Error: Invalid charity choice. Please enter 1, 2, or 3.")
+
+
+# Function to show the totals so far
+def show_totals(charities, charity_totals):
+    sorted_totals = sorted(zip(charities, charity_totals), key=lambda x: x[1], reverse=True)
+    
+    grand_total = sum(charity_totals)
+
+    print("\nCharity Totals:")
+    for charity, total in sorted_totals:
+        print(f"{charity}: ${total:.2f}")
+
+    print("\nGRAND TOTAL DONATED TO CHARITY:", grand_total)
+
+
+# Main program
+charities_list = setup_donation_system()
+charity_totals_list = [0] * NUM_CHARITIES
+
+while True:
+    record_and_total_donation(charities_list, charity_totals_list)
+    continue_donating = input("Do you want to record another donation? (yes/no): ").lower()
+    if continue_donating != 'yes':
+        break
+
+----
+
+
++*Out[ ]:*+
+----
+Enter the name of charity 1: 3
+Enter the name of charity 2: 1
+Enter the name of charity 3: 2
+
+Charities:
+1. 3
+2. 1
+3. 2
+Enter the number of the chosen charity (1, 2, or 3, -1 to show totals): 3
+Enter the value of the customer's shopping bill: 2
+Donation to 2: $0.02
+Enter the number of the chosen charity (1, 2, or 3, -1 to show totals): 1
+Enter the value of the customer's shopping bill: 1
+Donation to 3: $0.01
+----
+
+
++*In[ ]:*+
+[source, ipython3]
+----
+
+----
